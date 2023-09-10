@@ -5,7 +5,7 @@
     $android = strpos($_SERVER['HTTP_USER_AGENT'],"Android");
 
 
-    $con = mysqli_connect("192.168.0.12", "bpmddg", "@Rkddbals!", "bpm", 3306);
+    $con = mysqli_connect("192.168.0.12", "bpm", "bpmddg", "@Rkddbals!", 3306);
     mysqli_query($con,'SET NAMES utf8');
 
     $userID = isset($_POST["userID"]) ? $_POST["userID"] : "";

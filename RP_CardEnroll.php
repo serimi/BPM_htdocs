@@ -18,6 +18,23 @@ try {
     $c_date = isset($_POST["c_date"]) ? $_POST["c_date"] : "";
     $c_pw = isset($_POST["c_pw"]) ? $_POST["c_pw"] : "";
 
+    // Check if the number of digits exceeds the allowed limit
+    $maxCNumDigits = 16;
+    $maxCCvcDigits = 3;
+    $maxCDateDigits = 4;
+    $maxCPwDigits = 2;
+
+    if (strlen(only_number($c_num)) > $maxCNumDigits ||
+        strlen(only_number($c_cvc)) > $maxCCvcDigits ||
+        strlen(only_number($c_date)) > $maxCDateDigits ||
+        strlen(only_number($c_pw)) > $maxCPwDigits) {
+        $response = array();
+        $response["success"] = false;
+        $response["message"] = "입력된 숫자의 길이가 허용 범위를 벗어났습니다.";
+        echo json_encode($response);
+        exit;
+    }
+
     // Process user input by binding SQL queries
     $statement = $db->prepare("INSERT INTO card (userID, c_num, c_cvc, c_date, c_pw) VALUES (:userID, :c_num, :c_cvc, :c_date, :c_pw)");
 

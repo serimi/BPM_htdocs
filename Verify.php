@@ -10,7 +10,6 @@ ini_set('display_errors', 1);
 
 $android = strpos($_SERVER['HTTP_USER_AGENT'], "Android");
 
-
 function getPublicKey($userID) {
     $con = mysqli_connect("192.168.0.12", "bpmddg", "@Rkddbals!", "bpm", 3306);
     mysqli_query($con, 'SET NAMES utf8');
@@ -30,6 +29,7 @@ function getPublicKey($userID) {
 }
 
 $userID = isset($_POST['userID']) ? $_POST["userID"] : "";
+$p_id = isset($_POST['p_id']) ? $_POST["p_id"] : "";
 $message = isset($_POST['message']) ? $_POST["message"] : "";
 $signature = isset($_POST['signature']) ? $_POST["signature"] : "";
 $publicKey1 = isset($_POST['publicKey']) ? $_POST["publicKey"] : "";
@@ -97,7 +97,7 @@ function getcard($userID) {
 }
 
 if ($publicKeyResource !== false) {
-    $verify = openssl_verify(hash('sha256', $chall, true), base64_decode($signature), $publicKeyResource, OPENSSL_ALGO_SHA256);
+    $verify = openssl_verify(hash('sha256', $message, true), base64_decode($signature), $publicKeyResource, OPENSSL_ALGO_SHA256);
 
     if ($verify === 1) {
         // $response["purchased"] = true;
@@ -125,6 +125,10 @@ if ($publicKeyResource !== false) {
         if ($res === false) {
             echo "cURL error: " . curl_error($ch);
         } else {
+            $con = mysqli_connect("192.168.0.12", "bpmddg", "@Rkddbals!", "bpm", 3306);
+            $buy = "UPDATE product_list SET p_left = p_left - 1 where p_id = '$p_id'";
+            $con->query($buy);
+
             echo $res;
         }
 
