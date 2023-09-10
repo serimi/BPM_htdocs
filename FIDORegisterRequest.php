@@ -45,16 +45,7 @@ class RegisterRequest{
 }
 
 $regi = new RegisterRequest();
-// echo $regi->policy->userVerification;
-
-// Usage example
-// $header = new OperationHeader();
-// $header->op = Operation::Reg;
-
-// Access and print the values
-// echo "Version: {$header->upv->major}.{$header->upv->minor}" . PHP_EOL;
-// echo "Operation: {$header->op}" . PHP_EOL;
-// echo "App ID: {$header->appID}" . PHP_EOL;
+file_put_contents($filePath, json_encode($regi->challenge));
 
 $response = array(
     'Header' => $regi->header,
